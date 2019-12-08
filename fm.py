@@ -11,26 +11,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.io import wavfile
 from scipy.signal import hilbert
-import numpy.fft as fft
-
 import librosa
+from demod import fmdemod
 
 
-def calc_kf(beta, m):
-    '''carson rule:
-    kf = β * B * 2π / mp
+def calc_kf(beta, m, fc):
+    '''from carson rule:
+    kf =  2πfc / (mp * (1-β))
     '''
-    # get B
-    spectrum = fft.fft(m)
-    freq = fft.fftfreq(len(spectrum))
-    threshold = 0.5 * max(abs(spectrum))
-    mask = abs(spectrum) > threshold
-    peaks = freq[mask]
-    max_freq = peaks.max()  # B
-
     mp = abs(m.max())
 
-    return beta * max_freq * 2 * np.pi / mp
+    return 2 * np.pi * fc / (mp * (1 - beta))
 
 
 def modulate_fm(audio, sample_rate, beta):
@@ -44,9 +35,9 @@ def modulate_fm(audio, sample_rate, beta):
     fc = 100 * 1000  # 100 kHz
     wc = 2 * np.pi * fc
 
-    kf = calc_kf(beta, audio)
+    kf = calc_kf(beta, audio, fc)
 
-    return ac * np.cos(wc * time + kf * np.cumsum(audio))
+    return (ac * np.cos(wc * time + kf * np.cumsum(audio))), (kf * abs(audio.max()) / 2 * np.pi)
 
 
 print('read audio file')
@@ -55,7 +46,7 @@ audio, sample_rate = librosa.load('sample.wav')
 
 for beta, name in [(5, 'wide'), (.1, 'narrow')]:
     print(f'modeulate {name} band with β = {beta}')
-    modulated = modulate_fm(audio, sample_rate, beta)
+    modulated, delta_f = modulate_fm(audio, sample_rate, beta)
 
     for snr in [0, 1, 10, 20]:
         out_file_name = f'out/fm_{name}_snr_{snr}.wav'
@@ -65,8 +56,9 @@ for beta, name in [(5, 'wide'), (.1, 'narrow')]:
         noise = np.random.normal(0, 1/snr if snr != 0 else .1, len(audio))
         modulated_with_noise = modulated + noise
 
-        # demodulate TODO
-        demodulated = audio
+        # demodulate
+        demodulated = fmdemod(modulated_with_noise,
+                              sample_rate, delta_f, 100 * 1000)
 
         # out
         wavfile.write(out_file_name, sample_rate, demodulated)
