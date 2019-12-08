@@ -58,7 +58,7 @@ for beta, name in [(5, 'wide'), (.1, 'narrow')]:
     modulated = modulate_fm(audio, sample_rate, beta)
 
     for snr in [0, 1, 10, 20]:
-        out_file_name = f'out/am_{name}_snr_{snr}.wav'
+        out_file_name = f'out/fm_{name}_snr_{snr}.wav'
         print(out_file_name, end='', flush=True)
 
         # add noise
