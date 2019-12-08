@@ -94,4 +94,4 @@ def fmdemod(fm, sample_rate, delta_f, fc):
 
         output += time_domain.real.tolist()
 
-    return np.array([int(sample * 32767) for sample in output])
+    return np.array([int(sample * 32767) for sample in output])[:len(fm)]
