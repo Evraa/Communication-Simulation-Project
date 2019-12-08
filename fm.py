@@ -1,5 +1,5 @@
 '''
-    AM modulation with DSB-LC
+    FM modulation
     author: Mahmoud
 '''
 
