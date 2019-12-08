@@ -42,10 +42,10 @@ for snr in [0, 1, 10, 20]:
 
     # add noise
     noise = np.random.normal(0, 1/snr if snr != 0 else .1, len(audio))
-    modulated += noise
+    modulated_with_noise = modulated + noise
 
     # demodulate
-    analytic_signal = hilbert(modulated)
+    analytic_signal = hilbert(modulated_with_noise)
     amplitude_envelope = np.abs(analytic_signal)
 
     scaled = np.int16(amplitude_envelope /
