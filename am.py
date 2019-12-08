@@ -36,12 +36,12 @@ print('modulate')
 modulated = modulate_dsb_lc(audio, sample_rate)
 
 print('demodulate for each snr')
-for snr in [0, 1, 10, 20]:
+for snr in [0.0001, 1, 10, 20]:
     out_file_name = f'out/am_snr_{snr}.wav'
     print(out_file_name, end='', flush=True)
 
     # add noise
-    noise = np.random.normal(0, 1/snr if snr != 0 else .1, len(audio))
+    noise = np.random.normal(0, 1/snr, len(audio))
     modulated_with_noise = modulated + noise
 
     # demodulate

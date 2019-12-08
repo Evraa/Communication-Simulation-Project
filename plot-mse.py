@@ -17,7 +17,7 @@ fm_wide_mse = []
 for filename in os.listdir('out'):
     is_am = filename.startswith('am')
     is_narrow = filename.count('narrow') > 0
-    snr = int(filename[:-4].split('_')[-1])
+    snr = int(float(filename[:-4].split('_')[-1]))
 
     audio, _ = librosa.load(f'out/{filename}')
     assert audio.shape == sample.shape

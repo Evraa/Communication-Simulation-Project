@@ -48,12 +48,12 @@ for beta, name in [(5, 'wide'), (.1, 'narrow')]:
     print(f'modeulate {name} band with β = {beta}')
     modulated, delta_f = modulate_fm(audio, sample_rate, beta)
 
-    for snr in [0, 1, 10, 20]:
+    for snr in [0.0001, 1, 10, 20]:
         out_file_name = f'out/fm_{name}_snr_{snr}.wav'
         print(out_file_name, end='', flush=True)
 
         # add noise
-        noise = np.random.normal(0, 1/snr if snr != 0 else .1, len(audio))
+        noise = np.random.normal(0, 1/snr, len(audio))
         modulated_with_noise = modulated + noise
 
         # demodulate
