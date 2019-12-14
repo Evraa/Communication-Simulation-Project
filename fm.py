@@ -37,7 +37,6 @@ def modulate_fm(audio, sample_rate, beta):
     # time samples
     time = np.arange(0, audio.size) / sample_rate
 
-    # TODO: how to get Ac?
     ac = 1
 
     fc = 100 * 1000  # 100 kHz
