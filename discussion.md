@@ -88,5 +88,5 @@ No difference.
 
 AM is effected with noise more than FM.
 
-![](plt.png)
+![](/plt.png)
 
