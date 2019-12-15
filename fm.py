@@ -15,7 +15,6 @@ def calc_kf(beta, m, sample_rate):
     kf = β * B * 2π / mp
     '''
     max_freq = sample_rate/2
-    print(max_freq)
 
     mp = max(abs(m))
 
