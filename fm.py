@@ -10,19 +10,14 @@ import librosa
 from demod import fmdemod
 
 
-def calc_kf(beta, m):
+def calc_kf(beta, m, sample_rate):
     '''carson rule:
     kf = β * B * 2π / mp
     '''
-    # get B
-    spectrum = np.fft.fft(m)
-    freq = np.fft.fftfreq(len(spectrum))
-    threshold = 0.5 * max(abs(spectrum))
-    mask = abs(spectrum) > threshold
-    peaks = freq[mask]
-    max_freq = peaks.max()  # B
+    max_freq = sample_rate/2
+    print(max_freq)
 
-    mp = abs(m.max())
+    mp = max(abs(m))
 
     return beta * max_freq * 2 * np.pi / mp
 
@@ -37,7 +32,7 @@ def modulate_fm(audio, sample_rate, beta):
     fc = 100 * 1000  # 100 kHz
     wc = 2 * np.pi * fc
 
-    kf = calc_kf(beta, audio)
+    kf = calc_kf(beta, audio, sample_rate)
 
     return (ac * np.cos(wc * time + kf * np.cumsum(audio))), (kf * abs(audio.max()) / 2 * np.pi)
 

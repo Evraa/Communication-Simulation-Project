@@ -11,7 +11,8 @@
 
 ``` bash
 $ python3 -m pip install --user -r requirements.txt
-$ sudo apt install -y octave octave-communications
+$ sudo apt update
+$ sudo apt install -y octave octave-communications octave-miscellaneous
 ```
 
 * run AM:
