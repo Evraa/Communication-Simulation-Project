@@ -12,7 +12,7 @@
 ``` bash
 $ python3 -m pip install --user -r requirements.txt
 $ sudo apt update
-$ sudo apt install -y octave octave-communications octave-miscellaneous
+$ sudo apt install -y octave octave-communications
 ```
 
 * run AM:
@@ -22,7 +22,7 @@ $ python3 am.py
 
 * run FM:
 ```bash
-$ python3 fm.py
+$ octave fm.m
 ```
 
 * show plot:
@@ -36,14 +36,16 @@ $ python3 plot-mse.py
 
 * `fm.py` :
     - read sample.wav
-    - calc max freq `B` 
-    - calc Kf with `kf = β * B * 2π / mp` 
-    - calc ωc
-    - modulate with `modulated(t) = Ac * cos(ωc * t + kf * integration(audio(t)))` 
+    - resample to 4*fc
+    - let max freq `B` = sample rate
+    - `freqdev = β * B`
+    - calc Kf with `kf = freqdev * 2π / mp`
+    - modulate with `modulated(t) = Ac * cos(2π * fc * t + kf * integration(audio(t)))` 
     - for each β (5, .1):
         - for each snr (0, 1, 10, 20):
             - add random noise relative to 1/snr
             - demodulate with fmdemod
+            - resample back to original sample rate
             - write to /out
 
 * `am.py` :
