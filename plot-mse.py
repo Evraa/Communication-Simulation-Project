@@ -44,8 +44,8 @@ print('fm_narrow_mse: ', fm_narrow_mse)
 print('fm_wide_mse: ', fm_wide_mse)
 
 plt.plot(snrs, am_mse, label='AM')
-plt.plot(snrs, fm_narrow_mse)
-plt.plot(snrs, fm_wide_mse, label='FM')
+plt.plot(snrs, fm_narrow_mse, label='FM β=.1')
+plt.plot(snrs, fm_wide_mse, label='FM β=5')
 
 plt.legend(loc="upper right")
 plt.xlabel('SNR')

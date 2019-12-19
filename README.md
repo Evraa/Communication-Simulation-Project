@@ -5,5 +5,5 @@
 ```bash
 $ python3 -m pip install --user -r requirements.txt
 $ sudo apt update
-$ sudo apt install -y octave octave-communications octave-miscellaneous
+$ sudo apt install -y octave octave-communications
 ```
